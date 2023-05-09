@@ -1,5 +1,6 @@
 import os
 from slack_bolt import App
+import json
 
 app = App(
   token=os.environ.get("SLACK_BOT_TOKEN"),
@@ -9,6 +10,7 @@ app = App(
 @app.event("message")
 def handle_dm(client, event, logger):
   print('got an event')
+  print(json.dumps(event))
 
 if __name__ == "__main__":
   app.start(port=int(os.environ.get("PORT", 3000)))
