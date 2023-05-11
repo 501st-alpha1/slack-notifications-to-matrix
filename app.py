@@ -7,7 +7,14 @@ app = App(
   signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
 )
 
+my_channels = []
+
 def should_notify_channel(channel):
+  global my_channels
+  if channel in my_channels:
+    # Previously cached user belongs to this channel.
+    return True
+
   response = app.client.conversations_info(channel=channel)
 
   if not response['ok']:
@@ -18,12 +25,15 @@ def should_notify_channel(channel):
     return True
 
   if response['channel']['is_im']:
+    my_channels.append(channel)
     # Always notify for IMs.
     return True
   elif response['channel']['is_mpim']:
+    my_channels.append(channel)
     # Always notify for group IMs.
     return True
   elif response['channel']['is_member']:
+    my_channels.append(channel)
     # Only joined channels otherwise.
     return True
   else:
