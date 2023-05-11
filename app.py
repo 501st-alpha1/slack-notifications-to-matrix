@@ -45,5 +45,14 @@ def handle(client, event, logger):
   print('got an event')
   print(json.dumps(event))
 
+  if 'channel' in event:
+    if should_notify_channel(event['channel']):
+      print('notify user here')
+    else:
+      print('nothing to see here')
+  else:
+    print('todo: handle other event types')
+  print('-----end of handle------')
+
 if __name__ == "__main__":
   app.start(port=int(os.environ.get("PORT", 3000)))
