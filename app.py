@@ -31,7 +31,7 @@ def should_notify_channel(channel):
     return False
 
 @app.event("message")
-def handle_dm(client, event, logger):
+def handle(client, event, logger):
   print('got an event')
   print(json.dumps(event))
 
