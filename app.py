@@ -40,6 +40,20 @@ def should_notify_channel(channel):
     print('Skipping notification for unjoined channel ' + response['channel']['name'])
     return False
 
+def get_message(event):
+  username = 'FIXME'
+
+  message = username + ' just sent you '
+
+  if event['channel_type'] == 'im':
+    message += 'a DM!'
+  elif event['channel_type'] == 'mpim':
+    # TODO: specify which mpim this was sent to.
+    message += 'a multi-party DM!'
+  else:
+    channel_name = 'FIXME'
+    message += 'a message in the {0} channel!'.format(channel_name)
+
 @app.event("message")
 def handle(client, event, logger):
   print('got an event')
@@ -48,6 +62,8 @@ def handle(client, event, logger):
   if 'channel' in event:
     if should_notify_channel(event['channel']):
       print('notify user here')
+      message = get_message(event)
+      print('Sending user this message: {0}'.format(message))
     else:
       print('nothing to see here')
   else:
